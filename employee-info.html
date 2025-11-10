@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>员工信息填写 - 电脑选择系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .form-container {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #4299E1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+            outline: none;
+        }
+        
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* 修复select选项的颜色 */
+        .input-field option {
+            background-color: white;
+            color: #1a202c;
+        }
+        
+        .input-field option:checked {
+            background-color: #4299E1;
+            color: white;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #4299E1, #2B6CB0);
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(66, 153, 225, 0.3);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .floating-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .error-message {
+            color: #FEB2B2;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .error-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .success-checkmark {
+            animation: checkmark 0.6s ease-in-out;
+        }
+        
+        @keyframes checkmark {
+            0% { transform: scale(0) rotate(45deg); }
+            50% { transform: scale(1.2) rotate(45deg); }
+            100% { transform: scale(1) rotate(45deg); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+    <div class="container mx-auto max-w-md">
+        <!-- 页面标题 -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-white bg-opacity-20 rounded-full mb-4 floating-icon">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-bold text-white mb-2">员工信息验证</h1>
+            <p class="text-blue-100 text-sm">请填写您的个人信息以继续</p>
+        </div>
+
+        <!-- 表单容器 -->
+        <div class="form-container rounded-2xl p-8">
+            <form id="employeeForm" class="space-y-6">
+                <!-- 姓名输入 -->
+                <div>
+                    <label for="employeeName" class="block text-white font-medium mb-2">
+                        员工姓名 <span class="text-red-300">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="employeeName" 
+                        name="employeeName"
+                        class="input-field w-full px-4 py-3 rounded-lg"
+                        placeholder="请输入您的真实姓名"
+                        required
+                        maxlength="20"
+                    >
+                    <div id="nameError" class="error-message">
+                        请输入有效的中文姓名（2-20个字符）
+                    </div>
+                </div>
+
+                <!-- 手机号输入 -->
+                <div>
+                    <label for="employeePhone" class="block text-white font-medium mb-2">
+                        手机号码 <span class="text-red-300">*</span>
+                    </label>
+                    <input 
+                        type="tel" 
+                        id="employeePhone" 
+                        name="employeePhone"
+                        class="input-field w-full px-4 py-3 rounded-lg"
+                        placeholder="请输入您的手机号码"
+                        required
+                        maxlength="11"
+                        pattern="[0-9]{11}"
+                    >
+                    <div id="phoneError" class="error-message">
+                        请输入有效的11位手机号码
+                    </div>
+                </div>
+
+                <!-- 部门选择 -->
+                <div>
+                    <label for="department" class="block text-white font-medium mb-2">
+                        所属部门 <span class="text-red-300">*</span>
+                    </label>
+                    <select 
+                        id="department" 
+                        name="department"
+                        class="input-field w-full px-4 py-3 rounded-lg text-white"
+                        required
+                    >
+                        <option value="" class="text-gray-800">请选择您的部门</option>
+                        <option value="销售部" class="text-gray-800">销售部</option>
+                        <option value="财务部" class="text-gray-800">财务部</option>
+                        <option value="人力部" class="text-gray-800">人力部</option>
+                        <option value="技术部" class="text-gray-800">技术部</option>
+                        <option value="市场部" class="text-gray-800">市场部</option>
+                    </select>
+                    <div id="departmentError" class="error-message">
+                        请选择您的所属部门
+                    </div>
+                </div>
+
+                <!-- 员工类型 -->
+                <div>
+                    <label class="block text-white font-medium mb-3">
+                        员工类型 <span class="text-red-300">*</span>
+                    </label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center p-3 bg-white bg-opacity-10 rounded-lg cursor-pointer hover:bg-opacity-20 transition-all">
+                            <input type="radio" name="employeeType" value="正式员工" class="mr-3 text-blue-600">
+                            <span class="text-white text-sm">正式员工</span>
+                        </label>
+                        <label class="flex items-center p-3 bg-white bg-opacity-10 rounded-lg cursor-pointer hover:bg-opacity-20 transition-all">
+                            <input type="radio" name="employeeType" value="实习生" class="mr-3 text-blue-600">
+                            <span class="text-white text-sm">实习生</span>
+                        </label>
+                    </div>
+                    <div id="typeError" class="error-message">
+                        请选择您的员工类型
+                    </div>
+                </div>
+
+                <!-- 隐私声明 -->
+                <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                    <label class="flex items-start space-x-3 cursor-pointer">
+                        <input type="checkbox" id="privacyAgreement" name="privacyAgreement" class="mt-1 text-blue-600">
+                        <div class="text-sm text-blue-100">
+                            <p class="mb-1">我已阅读并同意 <span class="text-blue-300 underline">隐私政策</span> 和 <span class="text-blue-300 underline">使用条款</span></p>
+                            <p class="text-xs text-blue-200">您的个人信息仅用于身份验证和设备申请，不会被用于其他用途</p>
+                        </div>
+                    </label>
+                    <div id="privacyError" class="error-message">
+                        请同意隐私政策和使用条款
+                    </div>
+                </div>
+
+                <!-- 提交按钮 -->
+                <button 
+                    type="submit" 
+                    id="submitBtn"
+                    class="submit-btn w-full py-4 text-white font-semibold rounded-lg"
+                    disabled
+                >
+                    <span id="btnText">验证并进入系统</span>
+                    <svg id="loadingIcon" class="hidden w-5 h-5 mx-auto animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+
+        <!-- 底部信息 -->
+        <div class="text-center mt-6">
+            <p class="text-blue-100 text-xs">© 2024 公司名称 - 电脑选择系统</p>
+            <p class="text-blue-200 text-xs mt-1">请确保信息真实有效，虚假信息将影响申请结果</p>
+        </div>
+    </div>
+
+    <!-- 成功模态框 -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl p-8 mx-4 max-w-sm w-full text-center">
+            <div class="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
+                <svg class="w-8 h-8 text-green-600 success-checkmark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">验证成功！</h3>
+            <p class="text-gray-600 text-sm mb-6">欢迎 <span id="displayName" class="font-semibold text-blue-600"></span>，正在进入电脑选择系统...</p>
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+                <div id="progressBar" class="bg-blue-600 h-2 rounded-full transition-all duration-3000" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class EmployeeForm {
+            constructor() {
+                this.form = document.getElementById('employeeForm');
+                this.submitBtn = document.getElementById('submitBtn');
+                this.init();
+            }
+
+            init() {
+                this.setupValidation();
+                this.setupFormSubmission();
+            }
+
+            setupValidation() {
+                const inputs = this.form.querySelectorAll('input, select');
+                inputs.forEach(input => {
+                    input.addEventListener('input', this.validateField.bind(this));
+                    input.addEventListener('blur', this.validateField.bind(this));
+                    input.addEventListener('change', this.validateField.bind(this));
+                });
+
+                // 隐私协议复选框
+                document.getElementById('privacyAgreement').addEventListener('change', this.checkFormValidity.bind(this));
+            }
+
+            validateField(event) {
+                const field = event.target;
+                const value = field.value.trim();
+                let isValid = true;
+                let errorMessage = '';
+
+                switch(field.name) {
+                    case 'employeeName':
+                        if (!value) {
+                            isValid = false;
+                            errorMessage = '请输入您的真实姓名';
+                        } else if (!/^[一-龥]{2,20}$/.test(value)) {
+                            isValid = false;
+                            errorMessage = '请输入2-20位中文姓名';
+                        }
+                        break;
+
+                    case 'employeePhone':
+                        if (!value) {
+                            isValid = false;
+                            errorMessage = '请输入您的手机号码';
+                        } else if (!/^1[3-9]\d{9}$/.test(value)) {
+                            isValid = false;
+                            errorMessage = '请输入有效的11位手机号码';
+                        }
+                        break;
+
+                    case 'department':
+                        if (!value) {
+                            isValid = false;
+                            errorMessage = '请选择您的所属部门';
+                        }
+                        break;
+                }
+
+                this.showFieldError(field.name, isValid, errorMessage);
+                this.checkFormValidity();
+            }
+
+            showFieldError(fieldName, isValid, message) {
+                const errorElement = document.getElementById(fieldName.replace(/(Name|Phone)/, '') + 'Error') ||
+                                   document.getElementById(fieldName + 'Error');
+                
+                if (errorElement) {
+                    if (isValid) {
+                        errorElement.classList.remove('show');
+                    } else {
+                        errorElement.textContent = message;
+                        errorElement.classList.add('show');
+                    }
+                }
+            }
+
+            checkFormValidity() {
+                const formData = new FormData(this.form);
+                const name = formData.get('employeeName');
+                const phone = formData.get('employeePhone');
+                const department = formData.get('department');
+                const employeeType = formData.get('employeeType');
+                const privacyAgreement = formData.get('privacyAgreement');
+
+                const isNameValid = name && /^[一-龥]{2,20}$/.test(name);
+                const isPhoneValid = phone && /^1[3-9]\d{9}$/.test(phone);
+                const isDepartmentValid = department;
+                const isTypeValid = employeeType;
+                const isPrivacyValid = privacyAgreement;
+
+                const isFormValid = isNameValid && isPhoneValid && isDepartmentValid && isTypeValid && isPrivacyValid;
+                
+                this.submitBtn.disabled = !isFormValid;
+                
+                if (isFormValid) {
+                    anime({
+                        targets: this.submitBtn,
+                        scale: [1, 1.02, 1],
+                        duration: 300,
+                        easing: 'easeOutBack'
+                    });
+                }
+            }
+
+            setupFormSubmission() {
+                this.form.addEventListener('submit', this.handleSubmit.bind(this));
+            }
+
+            async handleSubmit(event) {
+                event.preventDefault();
+                
+                const formData = new FormData(this.form);
+                const employeeData = {
+                    name: formData.get('employeeName'),
+                    phone: formData.get('employeePhone'),
+                    department: formData.get('department'),
+                    type: formData.get('employeeType'),
+                    timestamp: new Date().toISOString()
+                };
+
+                // 显示加载状态
+                this.showLoadingState();
+                
+                // 模拟API调用
+                try {
+                    await this.simulateApiCall();
+                    this.showSuccess(employeeData.name);
+                } catch (error) {
+                    this.showError();
+                }
+            }
+
+            showLoadingState() {
+                const btnText = document.getElementById('btnText');
+                const loadingIcon = document.getElementById('loadingIcon');
+                
+                btnText.classList.add('hidden');
+                loadingIcon.classList.remove('hidden');
+                this.submitBtn.disabled = true;
+                
+                anime({
+                    targets: this.submitBtn,
+                    scale: [1, 0.98],
+                    duration: 200,
+                    easing: 'easeInOutQuad'
+                });
+            }
+
+            hideLoadingState() {
+                const btnText = document.getElementById('btnText');
+                const loadingIcon = document.getElementById('loadingIcon');
+                
+                btnText.classList.remove('hidden');
+                loadingIcon.classList.add('hidden');
+                this.submitBtn.disabled = false;
+            }
+
+            simulateApiCall() {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        // 模拟存储到localStorage
+                        const formData = new FormData(this.form);
+                        const employeeData = {
+                            name: formData.get('employeeName'),
+                            phone: formData.get('employeePhone'),
+                            department: formData.get('department'),
+                            type: formData.get('employeeType'),
+                            timestamp: new Date().toISOString()
+                        };
+                        
+                        // 存储为单独的记录，便于后台管理
+                        const recordId = 'employee_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                        localStorage.setItem(recordId, JSON.stringify(employeeData));
+                        
+                        // 同时保留原有的存储方式
+                        localStorage.setItem('employeeInfo', JSON.stringify(employeeData));
+                        
+                        resolve();
+                    }, 2000);
+                });
+            }
+
+            showSuccess(name) {
+                this.hideLoadingState();
+                
+                const modal = document.getElementById('successModal');
+                const displayName = document.getElementById('displayName');
+                const progressBar = document.getElementById('progressBar');
+                
+                displayName.textContent = name;
+                modal.classList.remove('hidden');
+                
+                // 进度条动画
+                anime({
+                    targets: progressBar,
+                    width: '100%',
+                    duration: 3000,
+                    easing: 'linear',
+                    complete: () => {
+                        setTimeout(() => {
+                            window.location.href = 'selection.html';
+                        }, 500);
+                    }
+                });
+                
+                // 模态框动画
+                anime({
+                    targets: modal.querySelector('.bg-white'),
+                    scale: [0.8, 1],
+                    opacity: [0, 1],
+                    duration: 400,
+                    easing: 'easeOutBack'
+                });
+            }
+
+            showError() {
+                this.hideLoadingState();
+                alert('提交失败，请稍后重试');
+            }
+        }
+
+        // 初始化表单
+        document.addEventListener('DOMContentLoaded', () => {
+            new EmployeeForm();
+            
+            // 页面加载动画
+            anime({
+                targets: '.form-container',
+                translateY: [50, 0],
+                opacity: [0, 1],
+                duration: 800,
+                easing: 'easeOutQuad'
+            });
+        });
+    </script>
+</body>
+</html>

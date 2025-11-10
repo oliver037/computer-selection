@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公司电脑使用须知 - 电脑选择系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .policy-item {
+            transition: all 0.3s ease;
+        }
+        
+        .policy-item:hover {
+            transform: translateX(8px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .checkbox-custom {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #4299E1;
+            border-radius: 6px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .checkbox-custom:checked {
+            background: #4299E1;
+            border-color: #4299E1;
+        }
+        
+        .checkbox-custom:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .submit-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .submit-btn:not(:disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(66, 153, 225, 0.3);
+        }
+        
+        .warning-icon {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+    <div class="container mx-auto max-w-4xl">
+        <!-- 页面标题 -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-white bg-opacity-20 rounded-full mb-4 warning-icon">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                </svg>
+            </div>
+            <h1 class="text-4xl font-bold text-white mb-2">公司电脑使用须知</h1>
+            <p class="text-blue-100 text-lg">请仔细阅读以下条款和注意事项</p>
+        </div>
+
+        <!-- 政策内容区域 -->
+        <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-2xl p-8 mb-6">
+            <!-- 重要提醒 -->
+            <div class="bg-yellow-500 bg-opacity-20 border border-yellow-400 border-opacity-30 rounded-lg p-4 mb-6">
+                <div class="flex items-start space-x-3">
+                    <svg class="w-6 h-6 text-yellow-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    </svg>
+                    <div>
+                        <h3 class="text-yellow-100 font-semibold mb-1">重要提醒</h3>
+                        <p class="text-yellow-100 text-sm">使用公司电脑即表示您同意遵守以下所有条款和规定。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 使用条款列表 -->
+            <div class="space-y-4 mb-8">
+                <div class="policy-item bg-white bg-opacity-5 rounded-lg p-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span class="text-white text-xs font-bold">1</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold mb-1">设备保管责任</h4>
+                            <p class="text-blue-100 text-sm">员工需妥善保管公司电脑，防止丢失、损坏或被盗。如发生上述情况，需立即向IT部门报告。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="policy-item bg-white bg-opacity-5 rounded-lg p-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span class="text-white text-xs font-bold">2</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold mb-1">软件安装限制</h4>
+                            <p class="text-blue-100 text-sm">未经IT部门批准，不得私自安装任何软件。所有软件安装需通过正规渠道申请。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="policy-item bg-white bg-opacity-5 rounded-lg p-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span class="text-white text-xs font-bold">3</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold mb-1">数据安全要求</h4>
+                            <p class="text-blue-100 text-sm">严格遵守公司数据安全政策，不得将公司数据存储在个人设备或云端，定期备份重要数据。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="policy-item bg-white bg-opacity-5 rounded-lg p-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span class="text-white text-xs font-bold">4</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold mb-1">网络使用规范</h4>
+                            <p class="text-blue-100 text-sm">只能连接公司授权的网络，禁止使用公共WiFi处理公司敏感信息，确保网络连接安全。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="policy-item bg-white bg-opacity-5 rounded-lg p-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span class="text-white text-xs font-bold">5</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold mb-1">设备维护义务</h4>
+                            <p class="text-blue-100 text-sm">定期更新系统和安全补丁，发现设备异常及时报修，保持设备清洁和良好运行状态。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="policy-item bg-white bg-opacity-5 rounded-lg p-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span class="text-white text-xs font-bold">6</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold mb-1">违规责任</h4>
+                            <p class="text-blue-100 text-sm">违反使用规定将承担相应责任，包括设备赔偿、纪律处分等，严重者将追究法律责任。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 联系信息 -->
+            <div class="bg-blue-500 bg-opacity-20 rounded-lg p-4 mb-6">
+                <h4 class="text-white font-semibold mb-2">技术支持联系</h4>
+                <div class="grid md:grid-cols-2 gap-4 text-sm text-blue-100">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>IT支持：it-support@company.com</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                        </svg>
+                        <span>紧急热线：400-123-4567</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 同意确认区域 -->
+        <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-2xl p-6 mb-6">
+            <div class="flex items-start space-x-4">
+                <input type="checkbox" id="agreeCheckbox" class="checkbox-custom mt-1">
+                <label for="agreeCheckbox" class="text-white cursor-pointer">
+                    <span class="font-semibold">我已阅读并同意以上所有条款</span>
+                    <p class="text-blue-100 text-sm mt-1">确认同意后方可继续申请公司电脑</p>
+                </label>
+            </div>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="flex flex-col sm:flex-row gap-4">
+            <button id="backBtn" class="flex-1 bg-white bg-opacity-20 text-white px-6 py-4 rounded-xl font-medium hover:bg-opacity-30 transition-all duration-200">
+                返回信息填写
+            </button>
+            <button id="confirmBtn" class="flex-1 submit-btn bg-blue-600 text-white px-6 py-4 rounded-xl font-medium" disabled>
+                确认申请公司电脑
+            </button>
+        </div>
+    </div>
+
+    <!-- 成功确认模态框 -->
+    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl p-8 mx-4 max-w-md w-full text-center">
+            <div class="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
+                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">申请成功！</h3>
+            <p class="text-gray-600 text-sm mb-6">您的公司电脑申请已提交，IT部门将在3个工作日内与您联系。</p>
+            <button id="closeModal" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                确定
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载动画
+        anime({
+            targets: '.policy-item',
+            translateX: [-50, 0],
+            opacity: [0, 1],
+            duration: 600,
+            delay: anime.stagger(100),
+            easing: 'easeOutQuad'
+        });
+
+        // 复选框状态管理
+        const checkbox = document.getElementById('agreeCheckbox');
+        const confirmBtn = document.getElementById('confirmBtn');
+
+        checkbox.addEventListener('change', function() {
+            confirmBtn.disabled = !this.checked;
+            
+            if (this.checked) {
+                anime({
+                    targets: confirmBtn,
+                    scale: [1, 1.05, 1],
+                    duration: 300,
+                    easing: 'easeOutBack'
+                });
+            }
+        });
+
+        // 确认按钮事件
+        confirmBtn.addEventListener('click', function() {
+            if (!checkbox.checked) return;
+            
+            anime({
+                targets: this,
+                scale: [1, 0.95],
+                duration: 200,
+                easing: 'easeInOutQuad',
+                complete: function() {
+                    document.getElementById('confirmModal').classList.remove('hidden');
+                    
+                    anime({
+                        targets: '#confirmModal .bg-white',
+                        scale: [0.8, 1],
+                        opacity: [0, 1],
+                        duration: 300,
+                        easing: 'easeOutBack'
+                    });
+                }
+            });
+        });
+
+        // 返回按钮事件
+        document.getElementById('backBtn').addEventListener('click', function() {
+            window.location.href = 'employee-info.html';
+        });
+
+        // 关闭模态框
+        document.getElementById('closeModal').addEventListener('click', function() {
+            const modal = document.getElementById('confirmModal');
+            
+            anime({
+                targets: modal.querySelector('.bg-white'),
+                scale: [1, 0.8],
+                opacity: [1, 0],
+                duration: 200,
+                easing: 'easeInBack',
+                complete: function() {
+                    modal.classList.add('hidden');
+                    // 这里可以跳转到其他页面或完成流程
+                    window.location.href = 'index.html';
+                }
+            });
+        });
+
+        // 政策项目悬停效果
+        document.querySelectorAll('.policy-item').forEach(item => {
+            item.addEventListener('click', function() {
+                anime({
+                    targets: this,
+                    scale: [1, 1.02, 1],
+                    duration: 300,
+                    easing: 'easeOutQuad'
+                });
+            });
+        });
+    </script>
+<script>
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            window.parent.postMessage('go-next', '*');
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            window.parent.postMessage('go-prev', '*');
+        }
+    });
+</script>
+</body>
+</html>

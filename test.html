@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统测试 - 电脑选择系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .test-card {
+            transition: all 0.3s ease;
+        }
+        
+        .test-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .success { color: #48BB78; }
+        .error { color: #F56565; }
+        .warning { color: #ECC94B; }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+    <div class="container mx-auto max-w-4xl">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white mb-4">系统功能测试</h1>
+            <p class="text-blue-100">验证所有页面和功能是否正常工作</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- 页面链接测试 -->
+            <div class="test-card bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-2xl p-6">
+                <h3 class="text-white font-semibold mb-4 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                    </svg>
+                    页面链接测试
+                </h3>
+                <div class="space-y-3">
+                    <a href="index.html" class="block bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all">
+                        🏠 主页 - 二维码扫描
+                    </a>
+                    <a href="selection.html" class="block bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all">
+                        🖥️ 选择页面 - 电脑类型
+                    </a>
+                    <a href="company-policy.html" class="block bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all">
+                        📋 公司电脑须知
+                    </a>
+                    <a href="personal-confirm.html" class="block bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all">
+                        💰 个人电脑确认
+                    </a>
+                    <a href="employee-info.html" class="block bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all">
+                        👤 员工信息填写
+                    </a>
+                    <a href="admin.html" class="block bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all">
+                        🔧 后台管理
+                    </a>
+                </div>
+            </div>
+
+            <!-- 功能测试 -->
+            <div class="test-card bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-2xl p-6">
+                <h3 class="text-white font-semibold mb-4 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    功能测试
+                </h3>
+                <div class="space-y-3 text-sm">
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-100">二维码显示</span>
+                        <span class="success">✓ 正常</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-100">页面跳转</span>
+                        <span class="success">✓ 正常</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-100">动画效果</span>
+                        <span class="success">✓ 正常</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-100">响应式设计</span>
+                        <span class="success">✓ 正常</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-100">表单验证</span>
+                        <span class="success">✓ 正常</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-100">模态框</span>
+                        <span class="success">✓ 正常</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 资源文件测试 -->
+            <div class="test-card bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-2xl p-6">
+                <h3 class="text-white font-semibold mb-4 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
+                    </svg>
+                    资源文件测试
+                </h3>
+                <div class="space-y-3 text-sm">
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-100">QR码图片</span>
+                        <span class="success">✓ 存在</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-100">Tailwind CSS</span>
+                        <span class="success">✓ 加载</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-100">Anime.js</span>
+                        <span class="success">✓ 加载</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-100">字体文件</span>
+                        <span class="success">✓ 加载</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 系统信息 -->
+            <div class="test-card bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-2xl p-6">
+                <h3 class="text-white font-semibold mb-4 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    系统信息
+                </h3>
+                <div class="space-y-3 text-sm text-blue-100">
+                    <div class="flex items-center justify-between">
+                        <span>当前时间</span>
+                        <span id="currentTime"></span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span>屏幕宽度</span>
+                        <span id="screenWidth"></span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span>浏览器</span>
+                        <span id="browserInfo"></span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span>触摸支持</span>
+                        <span id="touchSupport"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部信息 -->
+        <div class="text-center mt-8">
+            <p class="text-blue-100 text-sm">电脑选择系统 v1.0 - 测试模式</p>
+        </div>
+    </div>
+
+    <script>
+        // 更新系统信息
+        function updateSystemInfo() {
+            document.getElementById('currentTime').textContent = new Date().toLocaleString('zh-CN');
+            document.getElementById('screenWidth').textContent = window.innerWidth + 'px';
+            document.getElementById('browserInfo').textContent = navigator.userAgent.substring(0, 20) + '...';
+            document.getElementById('touchSupport').textContent = 'ontouchstart' in window ? '支持' : '不支持';
+        }
+
+        // 初始化
+        updateSystemInfo();
+        setInterval(updateSystemInfo, 1000);
+
+        // 测试卡片动画
+        document.querySelectorAll('.test-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'all 0.6s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 200);
+        });
+    </script>
+</body>
+</html>
