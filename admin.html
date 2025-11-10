@@ -224,30 +224,15 @@
                 this.updateStats();
             }
 
-            loadData() {
-                // 从localStorage加载数据
-                const allKeys = Object.keys(localStorage);
-                this.employeeData = [];
-                
-                allKeys.forEach(key => {
-                    if (key.startsWith('employee_') || key === 'employeeInfo') {
-                        try {
-                            const data = JSON.parse(localStorage.getItem(key));
-                            if (data && data.name) {
-                                this.employeeData.push({
-                                    id: key,
-                                    ...data,
-                                    timestamp: data.timestamp || new Date().toISOString()
-                                });
-                            }
-                        } catch (e) {
-                            console.error('Error parsing data:', e);
-                        }
-                    }
-                });
-
-                // 按时间排序
-                this.employeeData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            async loadData() {
+                try {
+                    const response = await fetch('/api/data');
+                    const result = await response.json();
+                    this.employeeData = result.data || [];
+                } catch (error) {
+                    console.error('加载数据失败:', error);
+                    this.employeeData = [];
+                }
             }
 
             setupEventListeners() {
@@ -332,8 +317,8 @@
                 });
             }
 
-            refreshData() {
-                this.loadData();
+            async refreshData() {
+                await this.loadData();
                 this.updateDisplay();
                 this.updateStats();
                 
@@ -346,39 +331,38 @@
                 });
             }
 
-            exportToExcel() {
+            async exportToExcel() {
                 if (this.employeeData.length === 0) {
                     alert('暂无数据可导出');
                     return;
                 }
 
-                // 创建CSV格式数据
-                const headers = ['姓名', '手机号', '部门', '员工类型', '提交时间'];
-                const csvContent = [
-                    headers.join(','),
-                    ...this.employeeData.map(employee => [
-                        employee.name || '',
-                        employee.phone || '',
-                        employee.department || '',
-                        employee.type || '',
-                        new Date(employee.timestamp).toLocaleString('zh-CN')
-                    ].join(','))
-                ].join('\n');
+                try {
+                    // 从后端获取导出文件
+                    const response = await fetch('/api/export');
+                    if (response.ok) {
+                        const blob = await response.blob();
+                        const filename = `员工信息_${new Date().toISOString().split('T')[0]}.csv`;
+                        
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = filename;
+                        link.click();
 
-                // 创建下载链接
-                const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = `员工信息_${new Date().toISOString().split('T')[0]}.csv`;
-                link.click();
-
-                // 导出动画
-                anime({
-                    targets: '#exportBtn',
-                    scale: [1, 1.1, 1],
-                    duration: 300,
-                    easing: 'easeOutBack'
-                });
+                        // 导出动画
+                        anime({
+                            targets: '#exportBtn',
+                            scale: [1, 1.1, 1],
+                            duration: 300,
+                            easing: 'easeOutBack'
+                        });
+                    } else {
+                        alert('导出失败');
+                    }
+                } catch (error) {
+                    console.error('导出错误:', error);
+                    alert('导出失败');
+                }
             }
 
             showClearConfirm() {
@@ -410,20 +394,12 @@
             }
 
             clearAllData() {
-                // 删除所有员工数据
-                const allKeys = Object.keys(localStorage);
-                allKeys.forEach(key => {
-                    if (key.startsWith('employee_') || key === 'employeeInfo') {
-                        localStorage.removeItem(key);
-                    }
-                });
-
+                // 注意：这里只是清空前端显示，实际数据清理需要后端API
+                alert('数据清理功能需要后端支持，当前仅清空显示');
                 this.employeeData = [];
                 this.updateDisplay();
                 this.updateStats();
                 this.hideClearConfirm();
-
-                alert('所有数据已清空');
             }
 
             deleteRecord(id) {
@@ -447,6 +423,11 @@
                 duration: 600,
                 delay: anime.stagger(150),
                 easing: 'easeOutQuad'
+            });
+        });
+    </script>
+</body>
+</html>    easing: 'easeOutQuad'
             });
         });
     </script>

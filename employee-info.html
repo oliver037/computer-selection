@@ -408,29 +408,30 @@
                 this.submitBtn.disabled = false;
             }
 
-            simulateApiCall() {
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                        // 模拟存储到localStorage
-                        const formData = new FormData(this.form);
-                        const employeeData = {
-                            name: formData.get('employeeName'),
-                            phone: formData.get('employeePhone'),
-                            department: formData.get('department'),
-                            type: formData.get('employeeType'),
-                            timestamp: new Date().toISOString()
-                        };
-                        
-                        // 存储为单独的记录，便于后台管理
-                        const recordId = 'employee_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                        localStorage.setItem(recordId, JSON.stringify(employeeData));
-                        
-                        // 同时保留原有的存储方式
-                        localStorage.setItem('employeeInfo', JSON.stringify(employeeData));
-                        
-                        resolve();
-                    }, 2000);
+            async simulateApiCall() {
+                const formData = new FormData(this.form);
+                const employeeData = {
+                    name: formData.get('employeeName'),
+                    phone: formData.get('employeePhone'),
+                    department: formData.get('department'),
+                    type: formData.get('employeeType')
+                };
+
+                // 发送到后端API - 使用相对路径
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(employeeData)
                 });
+
+                if (!response.ok) {
+                    throw new Error('提交失败');
+                }
+
+                const result = await response.json();
+                return result;
             }
 
             showSuccess(name) {

@@ -1,0 +1,22 @@
+{
+  "name": "computer-selection-system",
+  "version": "1.0.0",
+  "description": "员工电脑选择系统 - 包含前端和后端服务",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "backend": "node backend.js"
+  },
+  "keywords": [
+    "员工系统",
+    "电脑选择",
+    "信息管理",
+    "Web应用"
+  ],
+  "author": "IT部门",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
