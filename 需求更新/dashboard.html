@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>需求管理看板</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f0f2f5; 
+            margin: 0; 
+            padding: 30px; 
+            color: #1a1a1a;
+        }
+        
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 25px; 
+            max-width: 1100px;
+            margin-left: auto; 
+            margin-right: auto;
+        }
+        
+        h2 { font-size: 24px; font-weight: 700; color: #2d3748; }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        
+        th { 
+            text-align: left; 
+            padding: 16px; 
+            color: #718096; 
+            font-weight: 600; 
+            font-size: 13px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #edf2f7;
+        }
+        
+        td { 
+            padding: 16px; 
+            border-bottom: 1px solid #edf2f7; 
+            font-size: 14px; 
+            color: #4a5568;
+        }
+        
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background-color: #f7fafc; }
+
+        /* 标签样式 */
+        .tag-system {
+            background-color: #ebf8ff;
+            color: #3182ce;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .tag-priority {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .p-low { background: #f0fff4; color: #38a169; }
+        .p-medium { background: #fffaf0; color: #dd6b20; }
+        .p-high { background: #fff5f5; color: #e53e3e; }
+
+        /* 按钮样式 */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 2px 10px rgba(118, 75, 162, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(118, 75, 162, 0.4); }
+        
+        .btn-logout { background: white; border: 1px solid #e2e8f0; color: #718096; }
+        .btn-logout:hover { background: #f7fafc; color: #2d3748; }
+
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h2>📊 IT 需求总览</h2>
+    <div style="display: flex; gap: 10px;">
+        <a href="create.html" class="btn btn-primary">
+            <span>+</span> 提需求
+        </a>
+        <button onclick="logout()" class="btn btn-logout">退出</button>
+    </div>
+</div>
+
+<div class="card">
+    <table id="reqTable">
+        <thead>
+            <tr>
+                <th width="20%">需求标题</th>
+                <th width="15%">系统分类</th>
+                <th width="10%">优先级</th>
+                <th width="30%">描述</th>
+                <th width="10%">提交人</th>
+                <th width="15%">日期</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- JS 渲染 -->
+        </tbody>
+    </table>
+    <div id="emptyState" style="text-align: center; padding: 40px; display: none;">
+        <p style="color: #a0aec0;">📭 暂无待处理需求</p>
+    </div>
+</div>
+
+<script>
+    if(!localStorage.getItem('isLoggedIn')) { window.location.href = 'index.html'; }
+    function logout() { localStorage.removeItem('isLoggedIn'); window.location.href = 'index.html'; }
+
+    const data = JSON.parse(localStorage.getItem('reqData') || '[]');
+    const tbody = document.getElementById('tableBody');
+
+    if (data.length === 0) {
+        document.getElementById('emptyState').style.display = 'block';
+    } else {
+        data.reverse().forEach(item => {
+            const tr = document.createElement('tr');
+            
+            // 优先级样式处理
+            let pClass = 'p-medium';
+            let pText = '重要';
+            if(item.priority === 'low') { pClass = 'p-low'; pText = '一般'; }
+            if(item.priority === 'high') { pClass = 'p-high'; pText = '紧急'; }
+
+            // 兼容旧数据：如果之前存的是projectName，就显示在第一列；如果是新数据title，也显示在第一列
+            const displayTitle = item.title || item.projectName || '无标题';
+            
+            // 系统分类字段 (如果旧数据没有 systemCategory，则尝试取 reqType 或者显示为 '-')
+            const displaySystem = item.systemCategory || (['Bug修复','新功能'].includes(item.reqType) ? '-' : item.reqType) || '-';
+
+            tr.innerHTML = `
+                <td style="font-weight: 600; color: #2d3748;">${displayTitle}</td>
+                <td><span class="tag-system">${displaySystem}</span></td>
+                <td><span class="tag-priority ${pClass}">${pText}</span></td>
+                <td style="color: #718096;">${item.description}</td>
+                <td>${item.submitter}</td>
+                <td style="font-size: 12px; color: #a0aec0;">${item.dueDate || '-'}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+</script>
+
+</body>
+</html>
